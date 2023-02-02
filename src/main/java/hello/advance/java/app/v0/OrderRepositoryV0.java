@@ -1,13 +1,15 @@
 package hello.advance.java.app.v0;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class OrderRepositoryV0 {
 
-    public void save(String itemId) throws IllegalAccessException {
+    @SneakyThrows
+    public void save(String itemId) {
       // 조정 로직
       if (itemId.equals("ex")) {
         throw new IllegalAccessException("예외 발생!");
