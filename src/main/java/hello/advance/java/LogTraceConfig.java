@@ -1,7 +1,7 @@
 package hello.advance.java;
 
 import hello.advance.java.trace.logtrace.LogTrace;
-import hello.advance.java.trace.logtrace.TreadLocalLogTrace;
+import hello.advance.java.trace.logtrace.impl.TreadLocalLogTrace;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

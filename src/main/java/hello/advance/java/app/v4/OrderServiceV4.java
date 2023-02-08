@@ -2,7 +2,6 @@ package hello.advance.java.app.v4;
 
 import hello.advance.java.trace.TraceStatus;
 import hello.advance.java.trace.logtrace.LogTrace;
-import hello.advance.java.trace.logtrace.TreadLocalLogTrace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

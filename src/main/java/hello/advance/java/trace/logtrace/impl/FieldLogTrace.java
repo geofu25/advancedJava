@@ -1,22 +1,23 @@
-package hello.advance.java.trace.logtrace;
+package hello.advance.java.trace.logtrace.impl;
 
 import hello.advance.java.trace.TraceId;
 import hello.advance.java.trace.TraceStatus;
+import hello.advance.java.trace.logtrace.LogTrace;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TreadLocalLogTrace implements LogTrace {
+public class FieldLogTrace implements LogTrace {
 
   private static final String START_PREFIX = "-->";
   private static final String COMPLETE_PREFIX = "<--";
   private static final String EX_PREFIX = "<X-";
 
-  private ThreadLocal<TraceId> traceIdHolder = new ThreadLocal<>(); // treaceId 동기화
+  private TraceId traceIdHolder; // treaceId 동기화
 
   @Override
   public TraceStatus begin(String message) {
     syncTraceId();
-    TraceId traceId = traceIdHolder.get();
+    TraceId traceId = traceIdHolder;
     return new TraceStatus(traceId, beginLog(traceId, message), message);
   }
 
@@ -27,11 +28,10 @@ public class TreadLocalLogTrace implements LogTrace {
   public void exception(TraceStatus status, Exception e) { complete(status, e); }
 
   private void syncTraceId() {
-    TraceId traceId = traceIdHolder.get();
-    if (traceId == null) {
-      traceIdHolder.set(new TraceId());
+    if (traceIdHolder == null) {
+      traceIdHolder = new TraceId();
     } else {
-      traceIdHolder.set(traceId.createNextId());
+      traceIdHolder = traceIdHolder.createNextId();
     }
   }
 
@@ -53,11 +53,10 @@ public class TreadLocalLogTrace implements LogTrace {
   }
 
   private void releaseTransId(){
-      TraceId traceId = traceIdHolder.get();
-      if(traceId.isFirstLevel()) {
-        traceIdHolder.remove();  // destory
+      if(traceIdHolder.isFirstLevel()) {
+        traceIdHolder = null;
       } else{
-        traceIdHolder.set(traceId.createPrevId());
+        traceIdHolder = traceIdHolder.createPrevId();
       }
   }
 
