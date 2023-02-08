@@ -13,19 +13,19 @@ public class TraceId {
     }
 
     private TraceId(String id, int level) {
-      this.id = createId();
-      this.level = 0;
+      this.id = id;
+      this.level = level;
     }
 
     private  String createId() {
       return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    private TraceId createNextId(){
+    public TraceId createNextId(){
       return new TraceId(id, level+1);
     }
 
-    private TraceId createPrevId(){
+    public TraceId createPrevId(){
       return new TraceId(id, level-1);
     }
 
