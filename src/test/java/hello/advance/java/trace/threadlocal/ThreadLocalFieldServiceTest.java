@@ -1,13 +1,13 @@
-package hello.advance.java.threadlocal;
+package hello.advance.java.trace.threadlocal;
 
-import hello.advance.java.threadlocal.code.FieldService;
+import hello.advance.java.trace.threadlocal.code.ThreadLocalFieldService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class FieldServiceTest {
+public class ThreadLocalFieldServiceTest {
 
-  private FieldService fieldService = new FieldService();
+  private ThreadLocalFieldService fieldService = new ThreadLocalFieldService();
 
   @Test
   void Field() {

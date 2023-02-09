@@ -1,7 +1,7 @@
 package hello.advance.java.app.v4;
 
-import hello.advance.java.trace.TraceStatus;
 import hello.advance.java.trace.logtrace.LogTrace;
+import hello.advance.java.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,17 +16,15 @@ public class OrderControllerV4 {
 
   @GetMapping("/v4/request")
   public String request(String itemId) {
+    AbstractTemplate<String> template = new AbstractTemplate<>(trace) {
+      @Override
+      protected String call() {
+        orderService.orderItem(itemId);
+        return "ok";
+      }
+    };
 
-    TraceStatus status = null;
-
-    try {
-      status = trace.begin("OrderController.request()");
-      orderService.orderItem(itemId);
-      trace.end(status);
-      return "ok";
-    } catch (Exception e) {
-      trace.exception(status, e);
-      throw e;
-    }
+    return template.execute("OrderController.request()");
   }
+
 }

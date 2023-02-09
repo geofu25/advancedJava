@@ -2,6 +2,7 @@ package hello.advance.java.app.v4;
 
 import hello.advance.java.trace.TraceStatus;
 import hello.advance.java.trace.logtrace.LogTrace;
+import hello.advance.java.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
@@ -15,22 +16,23 @@ public class OrderRepositoryV4 {
     @SneakyThrows
     public void save(String itemId) {
 
-      TraceStatus status = null;
-
-      try {
-        status = trace.begin("OrderRepository.request()");
-        // 조정 로직
-        if (itemId.equals("ex")) {
-          throw new IllegalAccessException("예외 발생!");
+      AbstractTemplate<Void> template = new AbstractTemplate<>(trace) {
+        @Override
+        protected Void call()  {
+          // 조정 로직
+          if (itemId.equals("ex")) {
+            try {
+              throw new IllegalAccessException("예외 발생!");
+            } catch (IllegalAccessException e) {
+              throw new RuntimeException(e);
+            }
+          }
+          sleep(1000);
+          return null;
         }
-        sleep(1000);
-        trace.end(status);
+      };
 
-      } catch (Exception e) {
-        trace.exception(status, e);
-        throw e;
-      }
-
+      template.execute("OrderRepository.request()");
     }
 
     private void sleep(int millis) {

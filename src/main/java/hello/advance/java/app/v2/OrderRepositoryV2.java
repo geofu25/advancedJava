@@ -1,6 +1,6 @@
 package hello.advance.java.app.v2;
 
-import hello.advance.java.trace.HelloTraceV2;
+import hello.advance.java.trace.hellotrace.HelloTraceV2;
 import hello.advance.java.trace.TraceStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
